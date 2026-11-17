@@ -8,6 +8,18 @@ End-to-end analysis of ~100k real e-commerce orders from Olist, a Brazilian mark
 3. Do late deliveries hurt customer reviews?
 4. Do customers come back and buy again?
 
+## Key results
+📄 **Leadership summary: [REPORT.md](REPORT.md)**
+
+| # | Question | Analysis | Key finding |
+|---|---|---|---|
+| 1 | Is the business growing? | [01_business_growth](notebooks/01_business_growth.ipynb) | Strong 2017 growth from new customers; plateau in 2018 |
+| 2 | What drives revenue? | [02_categories_and_sellers](notebooks/02_categories_and_sellers.ipynb) | Top 20% of sellers bring in 82.5% of revenue |
+| 3 | Do late deliveries hurt reviews? | [03_delivery_and_reviews](notebooks/03_delivery_and_reviews.ipynb) | Bad reviews rise from 9% (on time) to 79% (8+ days late) |
+| 4 | Do customers come back? | [04_customer_retention](notebooks/04_customer_retention.ipynb) | Only 2.2% of customers buy again |
+
+**Methods used:** KPI definition, grain-safe SQL (CTEs, window functions), reconciliation checks, Pareto analysis, confounder checks, cohort retention with right-censoring.
+
 ## Data model
 ```mermaid
 erDiagram
@@ -72,15 +84,15 @@ erDiagram
 - `geolocation` has many coordinate points per zip code. It must be reduced to one row per zip before joining.
 
 ## Repository structure
-```
+├── REPORT.md           # leadership summary
 ├── data/               # local only (git-ignored)
 │   ├── raw/            # original Olist CSVs, never edited
 │   └── olist.duckdb    # warehouse, built by load_raw.py
+├── notebooks/          # one notebook per business question
 ├── scripts/
 │   ├── load_raw.py     # loads CSVs into schema `raw` (idempotent)
 │   └── check_keys.py   # verifies primary keys are unique
 └── requirements.txt
-```
 
 ## How to reproduce
 1. Clone the repo and create a Python 3.13 virtual environment
@@ -90,10 +102,10 @@ erDiagram
 5. `python scripts/check_keys.py`
 
 ## Tools
-Python · DuckDB · SQL · pandas · Jupyter
+Python · DuckDB · SQL · pandas · matplotlib · Jupyter
 
 ## Status
-🚧 In progress: data ingestion and validation complete; analysis next.
+✅ Complete: ingestion, validation, four analyses, leadership report.
 
 ## Data source
 Brazilian E-Commerce Public Dataset by Olist, via Kaggle.
